@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS `t_article` (
 DROP TABLE IF EXISTS `t_article_category`;
 CREATE TABLE IF NOT EXISTS `t_article_category` (
   `article_id` int(11) NOT NULL COMMENT '文章id',
-  `category` int(11) NOT NULL COMMENT '分类id',
-  PRIMARY KEY (`article_id`,`category`)
+  `category_id` int(11) NOT NULL COMMENT '分类id',
+  PRIMARY KEY (`article_id`,`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章，分类关联表';
 
 -- 数据导出被取消选择。
