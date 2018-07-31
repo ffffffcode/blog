@@ -24,17 +24,9 @@ CREATE TABLE IF NOT EXISTS `t_article` (
   `title` varchar(50) NOT NULL,
   `content` text NOT NULL,
   `user_id` int(11) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
-
--- 数据导出被取消选择。
--- 导出  表 blog.t_article_category 结构
-DROP TABLE IF EXISTS `t_article_category`;
-CREATE TABLE IF NOT EXISTS `t_article_category` (
-  `article_id` int(11) NOT NULL COMMENT '文章id',
-  `category_id` int(11) NOT NULL COMMENT '分类id',
-  PRIMARY KEY (`article_id`,`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章，分类关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
 
 -- 数据导出被取消选择。
 -- 导出  表 blog.t_article_tag 结构
@@ -52,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `t_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `name` varchar(20) NOT NULL COMMENT '分类名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='分类表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='分类表';
 
 -- 数据导出被取消选择。
 -- 导出  表 blog.t_comment 结构
@@ -64,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `t_comment` (
   `user_id` int(11) NOT NULL COMMENT '用户id',
   `article_id` int(11) NOT NULL COMMENT '文章id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
 
 -- 数据导出被取消选择。
 -- 导出  表 blog.t_tag 结构
@@ -73,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `t_tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `name` varchar(20) NOT NULL COMMENT '标签名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='标签表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='标签表';
 
 -- 数据导出被取消选择。
 -- 导出  表 blog.t_user 结构
@@ -83,9 +75,26 @@ CREATE TABLE IF NOT EXISTS `t_user` (
   `username` varchar(16) NOT NULL COMMENT '用户名',
   `password` varchar(32) NOT NULL COMMENT '密码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- 数据导出被取消选择。
+-- 导出  视图 blog.v_article_info 结构
+DROP VIEW IF EXISTS `v_article_info`;
+-- 创建临时表以解决视图依赖性错误
+CREATE TABLE `v_article_info` (
+	`id` INT(11) NOT NULL,
+	`title` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`content` TEXT NOT NULL COLLATE 'utf8mb4_general_ci',
+	`username` VARCHAR(16) NOT NULL COMMENT '用户名' COLLATE 'utf8mb4_general_ci',
+	`category_name` VARCHAR(20) NULL COMMENT '分类名' COLLATE 'utf8mb4_general_ci'
+) ENGINE=MyISAM;
+
+-- 导出  视图 blog.v_article_info 结构
+DROP VIEW IF EXISTS `v_article_info`;
+-- 移除临时表并创建最终视图结构
+DROP TABLE IF EXISTS `v_article_info`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_article_info` AS select `a`.`id` AS `id`,`a`.`title` AS `title`,`a`.`content` AS `content`,`u`.`username` AS `username`,`ca`.`name` AS `category_name` from ((`t_article` `a` join `t_user` `u` on((`a`.`user_id` = `u`.`id`))) left join `t_category` `ca` on((`a`.`category_id` = `ca`.`id`)));
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
