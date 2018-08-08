@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.blog.dao.ArticleInfoVoMapper;
-import com.blog.vo.ArticleInfoVo;
+import com.blog.dao.ArticleIndexVOMapper;
+import com.blog.vo.ArticleIndexVO;
 
 @Controller
 @RequestMapping(value = "/test")
@@ -26,7 +26,7 @@ public class TestController {
 	// private CategoryMapper categoryMapper;
 
 	@Autowired
-	private ArticleInfoVoMapper articleInfoVOMapper;
+	private ArticleIndexVOMapper articleIndexVOMapper;
 
 	// @RequestMapping(value = "/article/{id}", method = RequestMethod.GET)
 	// @ResponseBody
@@ -43,14 +43,14 @@ public class TestController {
 
 	@RequestMapping(value = "/article/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public ArticleInfoVo getArticleInfo(@PathVariable("id") Integer id) {
-		ArticleInfoVo articleListVO = articleInfoVOMapper.selectById(id);
+	public ArticleIndexVO getArticleInfo(@PathVariable("id") Integer id) {
+		ArticleIndexVO articleListVO = articleIndexVOMapper.selectById(id);
 		return articleListVO;
 	}
 
 	@RequestMapping(value = "/article", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ArticleInfoVo> getArticleInfo() {
-		return articleInfoVOMapper.selectList(null);
+	public List<ArticleIndexVO> getArticleInfo() {
+		return articleIndexVOMapper.selectList(null);
 	}
 }

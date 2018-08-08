@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("v_article_info")
-public class ArticleInfoVo {
+public class ArticleIndexVO {
 
 	private Integer id;
 	private String title;

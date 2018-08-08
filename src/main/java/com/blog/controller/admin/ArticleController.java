@@ -17,7 +17,7 @@ public class ArticleController {
 
 	@RequestMapping(value = "/article", method = RequestMethod.GET)
 	public String index(Model model) {
-		model.addAttribute("articleInfo", articleService.listArticleInfo());
+		model.addAttribute("articleInfo", articleService.listArticleIndexVOs());
 		return "article/index";
 	}
 

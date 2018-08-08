@@ -6,20 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blog.dao.ArticleInfoVoMapper;
+import com.blog.dao.ArticleIndexVOMapper;
 import com.blog.service.ArticleService;
-import com.blog.vo.ArticleInfoVo;
+import com.blog.vo.ArticleIndexVO;
 
 @Service
 @Transactional
 public class ArticleServiceImpl implements ArticleService {
 
 	@Autowired
-	private ArticleInfoVoMapper articleInfoVOMapper;
+	private ArticleIndexVOMapper articleIndexVOMapper;
 
 	@Override
-	public List<ArticleInfoVo> listArticleInfo() {
-		return articleInfoVOMapper.selectList(null);
+	public List<ArticleIndexVO> listArticleIndexVOs() {
+		return articleIndexVOMapper.selectList(null);
 	}
 
 }
