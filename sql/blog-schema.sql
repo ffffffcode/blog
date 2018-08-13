@@ -2,7 +2,7 @@
 -- 主机:                           127.0.0.1
 -- 服务器版本:                        5.6.38 - MySQL Community Server (GPL)
 -- 服务器操作系统:                      Win64
--- HeidiSQL 版本:                  9.5.0.5196
+-- HeidiSQL 版本:                  9.5.0.5284
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -78,10 +78,23 @@ CREATE TABLE IF NOT EXISTS `t_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- 数据导出被取消选择。
--- 导出  视图 blog.v_article_info 结构
-DROP VIEW IF EXISTS `v_article_info`;
+-- 导出  视图 blog.v_article_editor 结构
+DROP VIEW IF EXISTS `v_article_editor`;
 -- 创建临时表以解决视图依赖性错误
-CREATE TABLE `v_article_info` (
+CREATE TABLE `v_article_editor` (
+	`id` INT(11) NOT NULL,
+	`title` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`content` TEXT NOT NULL COLLATE 'utf8mb4_general_ci',
+	`category_id` INT(11) NULL COMMENT 'id',
+	`category_name` VARCHAR(20) NULL COMMENT '分类名' COLLATE 'utf8mb4_general_ci',
+	`tag_id` INT(11) NULL COMMENT '标签id',
+	`tag_name` VARCHAR(20) NULL COMMENT '标签名' COLLATE 'utf8mb4_general_ci'
+) ENGINE=MyISAM;
+
+-- 导出  视图 blog.v_article_index 结构
+DROP VIEW IF EXISTS `v_article_index`;
+-- 创建临时表以解决视图依赖性错误
+CREATE TABLE `v_article_index` (
 	`id` INT(11) NOT NULL,
 	`title` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
 	`content` TEXT NOT NULL COLLATE 'utf8mb4_general_ci',
@@ -89,11 +102,17 @@ CREATE TABLE `v_article_info` (
 	`category_name` VARCHAR(20) NULL COMMENT '分类名' COLLATE 'utf8mb4_general_ci'
 ) ENGINE=MyISAM;
 
--- 导出  视图 blog.v_article_info 结构
-DROP VIEW IF EXISTS `v_article_info`;
+-- 导出  视图 blog.v_article_editor 结构
+DROP VIEW IF EXISTS `v_article_editor`;
 -- 移除临时表并创建最终视图结构
-DROP TABLE IF EXISTS `v_article_info`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_article_info` AS select `a`.`id` AS `id`,`a`.`title` AS `title`,`a`.`content` AS `content`,`u`.`username` AS `username`,`ca`.`name` AS `category_name` from ((`t_article` `a` join `t_user` `u` on((`a`.`user_id` = `u`.`id`))) left join `t_category` `ca` on((`a`.`category_id` = `ca`.`id`)));
+DROP TABLE IF EXISTS `v_article_editor`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_article_editor` AS select `a`.`id` AS `id`,`a`.`title` AS `title`,`a`.`content` AS `content`,`c`.`id` AS `category_id`,`c`.`name` AS `category_name`,`r`.`tag_id` AS `tag_id`,`t`.`name` AS `tag_name` from (((`t_article` `a` left join `t_category` `c` on((`a`.`category_id` = `c`.`id`))) left join `t_article_tag` `r` on((`a`.`id` = `r`.`article_id`))) left join `t_tag` `t` on((`t`.`id` = `r`.`tag_id`)));
+
+-- 导出  视图 blog.v_article_index 结构
+DROP VIEW IF EXISTS `v_article_index`;
+-- 移除临时表并创建最终视图结构
+DROP TABLE IF EXISTS `v_article_index`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_article_index` AS select `a`.`id` AS `id`,`a`.`title` AS `title`,`a`.`content` AS `content`,`u`.`username` AS `username`,`ca`.`name` AS `category_name` from ((`t_article` `a` join `t_user` `u` on((`a`.`user_id` = `u`.`id`))) left join `t_category` `ca` on((`a`.`category_id` = `ca`.`id`)));
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

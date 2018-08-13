@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.dao.ArticleEditorVOMapper">
+	<resultMap type="com.blog.vo.ArticleEditerVO" id="BaseMap">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="category_id" property="categoryId" />
+		<result column="category_name" property="categoryName" />
+		<collection column="id" property="tags"
+			ofType="com.blog.entity.Tag">
+			<id column="tag_id" property="id" />
+			<result column="tag_name" property="name" />
+		</collection>
+	</resultMap>
+
+	<select id="getAritcleEditorVOByIdUsingXml"
+		parameterType="java.lang.Integer" resultMap="BaseMap">
+		SELECT
+		a.id AS id, a.title
+		AS title, a.content AS content, a.category_id,
+		c.name AS category_name,
+		r.tag_id AS tag_id, t.name AS tag_name
+		FROM
+		t_article a
+		LEFT JOIN
+		t_category C
+		ON a.category_id = c.id
+		LEFT JOIN
+		t_article_tag r
+		ON a.id =
+		r.article_id
+		LEFT JOIN
+		t_tag t
+		ON r.tag_id =
+		t.id
+		WHERE a.id = #{id}
+	</select>
+</mapper>

@@ -15,14 +15,25 @@ public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
 
+	/**
+	 * 文章管理页面
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/article", method = RequestMethod.GET)
 	public String index(Model model) {
 		model.addAttribute("articleInfo", articleService.listArticleIndexVOs());
 		return "article/index";
 	}
 
-	@RequestMapping(value = "/article/edit", method = RequestMethod.GET)
-	public String edit() {
-		return "article/edit";
+	/**
+	 * 发布文章/编辑文章页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/article/editor", method = RequestMethod.GET)
+	public String editor() {
+		return "article/editor";
 	}
 }
