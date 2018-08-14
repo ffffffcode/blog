@@ -4,10 +4,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.blog.entity.User;
+import com.blog.entity.Comment;
 
 @Component
 @Mapper
-public interface CommentMapper extends BaseMapper<User> {
+public interface CommentMapper extends BaseMapper<Comment> {
 
 }
